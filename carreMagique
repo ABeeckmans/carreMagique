@@ -1,0 +1,127 @@
+ALGORITHME : carreMagique
+//BUT: algorithme qui dessine un carré magiue
+//ENTREE : les dimensions du carré (5 ou 7)
+//SORTIE : l'affichage du carré magique
+ 
+
+
+
+
+
+
+VAR
+	x, y, tour, taille : ENTIER
+	carre : Tableau[1..taille, 1..taille] DE ENTIER
+
+
+procedure initialisation (tableau : Tableau[1..taille,1..taille] DE ENTIER, maLongueur : entier)
+
+//BUT remplacer toutes les cases par des 0 afin de pouvoir les comparer
+//ENTREE rien
+//SORTIE le tableau initialisé
+
+VAR
+	i,j, tour : ENTIER
+
+DEBUT
+	POUR i de 1 A maLongueur FAIRE
+		POUR j DE 1 A maLongueur FAIRE
+			carre[i, j] <-- 0
+		FINPOUR
+	FINPOUR
+
+FIN
+
+
+procedure position (a, b, maLongueur : entier)
+
+DEBUT
+		SI (a < maLongueur) ET (b > 1) ALORS
+			a <-- a + 1
+			b <-- b - 1
+		SINON
+			//cas ou on arrive sur le cote droit
+			SI (a = maLongueur) ET (b <> 1) ALORS
+				a <-- 1
+				b <-- b - 1
+			SINON
+				//cas ou on arrive au sommet
+				SI (a <> maLongueur) ET (b = 1) ALORS
+					a <-- a + 1
+					b <-- maLongueur
+				SINON
+					//coin droit
+					SI (a = maLongueur) ET (b = 1) ALORS
+						a <-- 1
+						b <-- maLongueur
+					FINSI
+				FINSI
+			FINSI
+		FINSI
+FIN
+
+procedure reposition (nb, maLongueur : ENTIER)
+
+DEBUT
+	SI (nb > 1) ALORS
+		nb <--nb - 1
+	SINON
+		nb <-- maLongueur
+	FINSI
+FIN
+
+
+
+affichage (tableau : Tableau[1..taille,1..taille] DE ENTIER, maLongueur : entier)
+
+VAR
+	i,j : ENTIER
+
+DEBUT
+	POUR i DE 1 A maLongueur FAIRE
+		POUR j DE 1 A maLongueur FAIRE
+			ECRIRE carre[i,j]
+		FINPOUR
+	FINPOUR
+FIN
+
+DEBUT
+
+	ECRIRE("Veuillez entrer la taille du carre magique impair")
+	LIRE taille
+
+	TANTQUE taille MOD 2 <> 1 FAIRE
+		ECRIRE "Veuillez entrer un nombre impair"
+		LIRE taille
+	FINTANTQUE
+
+
+
+	x <-- taille DIV 2 + 1
+	y <-- taille DIV 2
+	initialisation(carre, taille)
+
+
+	tour <-- 1
+	carre[x, y] <-- 1
+
+	POUR tour DE 2 A (taille*taille) FAIRE
+		
+		position(a,b,taille)
+
+
+		SI carre [x,y] = 0 ALORS
+			carre[x,y] <-- tour
+		SINON
+			TANTQUE carre[x,y] <> 0 FAIRE 
+				reposition(x, taille)
+				reposition(y, taille)
+			FINTANTQUE
+			carre[x,y] <-- tour
+		FINSI
+
+		affichage(carre, taille)
+	FINPOUR
+FIN
+
+
